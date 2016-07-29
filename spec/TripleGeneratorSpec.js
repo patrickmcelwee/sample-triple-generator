@@ -18,25 +18,38 @@ describe("TripleGenerator", function() {
     tripleGenerator = new TripleGenerator();
   });
 
-  describe("enrichDocs", function() {
-    it("preserves existing json", function() {
+  describe('enrichDocs', function() {
+
+    it('preserves existing json', function() {
       var docs = [doc1];
       var originalDoc1 = _.cloneDeep(docs[0]);
       var enrichedDocs = tripleGenerator.enrichDocs(docs);
       expect(enrichedDocs[0]).toEqual(jasmine.objectContaining(originalDoc1));
     });
-  });
 
-  describe("enrichDocs", function() {
-    it("creates following triples", function() {
+    it('creates triples about knowing someone', function() {
       var docs = [doc1, doc2];
       var enrichedDocs = tripleGenerator.enrichDocs(docs);
-      expect(enrichedDocs[0]).toEqual(jasmine.objectContaining(
-        {
-          "triples": jasmine.any(Array)
+      expect(enrichedDocs[0].triples).toEqual(jasmine.arrayContaining([
+        { 'triple':
+          {
+            'subject': '/sample-data/data-1.json',
+            'predicate': 'http://xmlns.com/foaf/0.1/knows',
+            'object': '/sample-data/data-10.json'
+          }
         }
-      ));
+      ]));
+      expect(enrichedDocs[1].triples).toEqual(jasmine.arrayContaining([
+        { 'triple':
+          {
+            'subject': '/sample-data/data-10.json',
+            'predicate': 'http://xmlns.com/foaf/0.1/knows',
+            'object': '/sample-data/data-1.json'
+          }
+        }
+      ]));
     });
+
   });
 
 });
