@@ -30,24 +30,26 @@ describe("TripleGenerator", function() {
     it('creates triples about knowing someone', function() {
       var docs = [doc1, doc2];
       var enrichedDocs = tripleGenerator.enrichDocs(docs);
-      expect(enrichedDocs[0].triples).toEqual(jasmine.arrayContaining([
-        { 'triple':
-          {
-            'subject': '/sample-data/data-1.json',
-            'predicate': 'http://xmlns.com/foaf/0.1/knows',
-            'object': '/sample-data/data-10.json'
-          }
-        }
-      ]));
-      expect(enrichedDocs[1].triples).toEqual(jasmine.arrayContaining([
-        { 'triple':
-          {
-            'subject': '/sample-data/data-10.json',
-            'predicate': 'http://xmlns.com/foaf/0.1/knows',
-            'object': '/sample-data/data-1.json'
-          }
-        }
-      ]));
+      expect(enrichedDocs[0]).toHaveTriple( 
+        '/sample-data/data-1.json',
+        'http://xmlns.com/foaf/0.1/knows',
+        '/sample-data/data-10.json'
+      );
+      expect(enrichedDocs[1]).toHaveTriple(
+        '/sample-data/data-10.json',
+        'http://xmlns.com/foaf/0.1/knows',
+        '/sample-data/data-1.json'
+      );
+    });
+
+    it('asserts rdf:type foaf:Person', function() {
+      var docs = [doc1];
+      var enrichedDocs = tripleGenerator.enrichDocs(docs);
+      expect(enrichedDocs[0]).toHaveTriple(          
+        '/sample-data/data-1.json',
+        'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+        'http://xmlns.com/foaf/0.1/Person'
+      );
     });
 
   });

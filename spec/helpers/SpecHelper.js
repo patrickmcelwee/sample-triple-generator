@@ -6,18 +6,30 @@ var reporter = new JasmineConsoleReporter({
     listStyle: 'indent', // "flat"|"indent" 
     activity: false
 });
-jasmine.getEnv().addReporter(reporter); 
+// jasmine.getEnv().addReporter(reporter); 
 
 beforeEach(function () {
   jasmine.addMatchers({
-    toBePlaying: function () {
+    toHaveTriple: function(util, customEqualityTesters) {
       return {
-        compare: function (actual, expected) {
-          var player = actual;
-
-          return {
-            pass: player.currentlyPlayingSong === expected && player.isPlaying
-          };
+        compare: function(actual, subject, predicate, object) {
+          var result = {};
+          result.pass = util.equals(
+            actual.triples, 
+            jasmine.arrayContaining([
+              { 'triple':
+                {
+                  'subject':subject,
+                  'predicate': predicate,
+                  'object': object
+                }
+              }
+            ])
+          );
+          if (!result.pass) {
+            result.message = "Expected" + actual.triples + "to have triple: " + subject + " " + predicate + " " + object;
+          }
+          return result;
         }
       };
     }
