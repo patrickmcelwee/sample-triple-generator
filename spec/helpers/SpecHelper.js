@@ -27,7 +27,7 @@ beforeEach(function () {
             ])
           );
           if (!result.pass) {
-            result.message = "Expected" + actual.triples + "to have triple: " + subject + " " + predicate + " " + object;
+            result.message = "Expected" + JSON.stringify(actual.triples) + "to have triple:\n <" + subject + "> <" + predicate + "> <" + object + "> .";
           }
           return result;
         }

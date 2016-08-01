@@ -52,6 +52,16 @@ describe("TripleGenerator", function() {
       );
     });
 
+    it('includes an rdfs:label', function() {
+      var docs = [doc1];
+      var enrichedDocs = tripleGenerator.enrichDocs(docs);
+      expect(enrichedDocs[0]).toHaveTriple(          
+        '/sample-data/data-1.json',
+        'http://www.w3.org/2000/01/rdf-schema#label',
+        'Mathews Mccray'
+      );
+    });
+
   });
 
 });
